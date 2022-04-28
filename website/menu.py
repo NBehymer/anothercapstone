@@ -48,12 +48,15 @@ def item(id):
       options[i] = temp[0]
       price += float(temp[1])
       i+=1
-
-    for item in session['cart']:
-      if item['name'] == name and item['options'] == options:
-        item['quantity'] += 1
-        session.modified = True
-        return redirect(url_for('menu.website_menu'))
+  
+    try:
+      for item in session['cart']:
+        if item['name'] == name and item['options'] == options:
+          item['quantity'] += 1
+          session.modified = True
+          return redirect(url_for('menu.website_menu'))
+    except KeyError:
+      pass
     session['cart'] += [{'name': name, 'price': price, 'quantity': quantity, 'id': 0, 'options': options}]
     """ cart_item = Cart(name=name, price=price, quantity=quantity)
     db.session.add(cart_item)
